@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Youtube-Saver",
+  "description": "Save youtube video at timestamp",
+  "version": "1.0.0",
+  "icons": {
+    "256": "images/logo.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "css/main.min.css"
+      ],
+      "js": [
+        "js/main.min.js"
+      ]
+    }
+  ]
+}
