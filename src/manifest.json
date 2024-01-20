@@ -4,7 +4,7 @@
   "description": "Save youtube video at timestamp",
   "version": "1.0.0",
   "icons": {
-    "256": "images/logo.png"
+    "64": "images/logo.png"
   },
   "action": {
     "default_popup": "popup/popup.html"

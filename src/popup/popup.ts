@@ -14,20 +14,9 @@ class Popup{
         this.cssSelector = this.getCssSelector();
         this.element = this.getElement();
 
-        //this.setEventListener(this.element.addMovieBtnEl, 'click', this.addMovieBtnClick.bind(this));
-
         this.getStorage(this.youtubeStoreKey);
 
         console.log('Popup object created!');     
-    }
-
-    private getStorage(key:string){
-        this.localStorage
-            .get([key])
-            .then((result)=>{
-                this.youtubeLinks = result[ this.youtubeStoreKey ] ? [ ...result[ this.youtubeStoreKey ] ] : [];
-                this.injectList();
-            });           
     }
 
     private getCssSelector(): CssSelector{
@@ -59,6 +48,15 @@ class Popup{
         console.log('Event listener set!');
     }
 
+    private getStorage(key:string){
+        this.localStorage
+            .get([key])
+            .then((result)=>{
+                this.youtubeLinks = result[ this.youtubeStoreKey ] ? [ ...result[ this.youtubeStoreKey ] ] : [];
+                this.injectList();
+            });           
+    }
+
     private injectList(): void{
         let links = '';
         let i = 1;
@@ -78,7 +76,7 @@ class Popup{
 
         this.element.aEl.forEach(a => {
             this.setEventListener(a, 'click', this.sendNavigateRequest.bind(this, a))
-        })
+        });
     }
 
     private sendNavigateRequest(element: HTMLElement): void {

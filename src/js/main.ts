@@ -18,10 +18,6 @@ class Main {
         const hostname = 'www.youtube.com';
         const pathname = '/watch';
 
-        window.addEventListener('locationchange', ()=>{
-            console.log('main content change');
-        });
-
         if(this.winLoc?.hostname && this.winLoc?.pathname && this.winLoc?.hostname === hostname && this.winLoc?.pathname === pathname){
             this.cssSelector = this.getCssSelector();
             this.element = this.getElement();
