@@ -1,4 +1,4 @@
-class Main {
+class Content {
     private _doc;
     private browser;
     private localStorage;
@@ -43,15 +43,14 @@ class Main {
         };
     }
 
-    private setEventListener(element: HTMLElement | null, event: string, customMethod: any){
+    private setEventListener(element: HTMLElement | null, event: string, customMethod?: any){
         console.log(`Setting event listener - ${event} -  on element - ${element}...`);
 
         element?.addEventListener(event, (e)=>{
+            e.preventDefault();
             e.stopPropagation();
             customMethod();
         });
-
-        console.log('Event listener set!');
     }
 
     private appendBtn(){
@@ -60,12 +59,13 @@ class Main {
         let btn = document.createElement('button');
         btn.innerHTML = 'Save Video';
         btn.id = this.cssSelector.btn.slice(1, this.cssSelector.btn.length);
+        btn.className = 'btn';
+
+        this.setEventListener(btn, 'click', this.scrapData.bind(this));
 
         this.element.playerEl?.insertAdjacentElement("afterend", btn);
 
         this.element.btnEl = this._doc.querySelector(`${this.cssSelector.btn}`);
-
-        this.setEventListener(this.element.btnEl, 'click', this.scrapData.bind(this));
     }
 
     private scrapData(){
@@ -118,7 +118,7 @@ class Main {
     }
 }
 
-const main = new Main();
+const content = new Content();
 
 enum Action{
     NAVIGATE = "NAVIGATE"

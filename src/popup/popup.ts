@@ -37,10 +37,23 @@ class Popup{
         };
     }
 
-    private setEventListener(element: HTMLElement | null, event: string, customMethod: any){
+    private setEventListener(element: HTMLElement | null, event: string, customMethod?: any, isPassEvent: boolean = false){
         console.log(`Setting event listener - ${event} -  on element - ${element}...`);
 
         element?.addEventListener(event, (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            isPassEvent ? customMethod(e) : customMethod();
+        });
+
+        console.log('Event listener set!');
+    }
+
+    private deleteEventListener(element: HTMLElement | null, event: string, customMethod?: any){
+        console.log(`Removing event listener - ${event} -  on element - ${element}...`);
+
+        element?.removeEventListener(event, (e)=>{
+            e.preventDefault();
             e.stopPropagation();
             customMethod();
         });
@@ -75,18 +88,21 @@ class Popup{
         this.element = this.getElement();
 
         this.element.aEl.forEach(a => {
-            this.setEventListener(a, 'click', this.sendNavigateRequest.bind(this, a))
+            this.deleteEventListener(a, 'click', this.sendNavigateRequest.bind(this, a));
         });
+
+        this.setEventListener(this.element.listEl, 'click', this.sendNavigateRequest.bind(this), true);
     }
 
-    private sendNavigateRequest(element: HTMLElement): void {
+    private sendNavigateRequest(event: PointerEvent): void {
         const params = this.getParams();
+        const element = event.target as HTMLElement;
 
-        console.info('tusam', element);
+        const anchorChild = element.className === this.cssSelector.link ? element.children[0] : element;
 
         this.browser.tabs.query(params, (tabs)=>{
             const currentTab = tabs[0].id;
-            const url = element.getAttribute('href') || '';
+            const url = anchorChild.getAttribute('href') || '';
             const request = this.formatRequest(Action.NAVIGATE, url);
 
             currentTab && this.browser.tabs.sendMessage(currentTab, request);
@@ -124,7 +140,7 @@ interface CssSelector{
 interface CustomElement{
     youtubeLinksListEl: HTMLElement | null;
     listEl: HTMLInputElement | null;
-    linkEl: NodeListOf<Element>;
+    linkEl: NodeListOf<HTMLElement>;
     aEl: NodeListOf<HTMLElement>;
 }
 

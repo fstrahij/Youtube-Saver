@@ -19,10 +19,10 @@
         "<all_urls>"
       ],
       "css": [
-        "css/main.min.css"
+        "css/content.min.css"
       ],
       "js": [
-        "js/main.min.js"
+        "js/content.min.js"
       ]
     }
   ]
