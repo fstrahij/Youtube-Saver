@@ -6,10 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --loader ts-node/esm src/js/content.ts",
-    "tsc": "npx tsc src/js/content.ts --outFile dist/js/content.min.js && npx tsc src/popup/popup.ts --outFile dist/popup/popup.min.js",
-    "min": "npm run min:js && npm run min:html && npm run min:css",
+    "tsc": "tsc",
+    "min": "npm run min:js && npm run min:js:clean && npm run min:html && npm run min:css",
     "min:html": "npx html-minifier-terser src/popup/popup.html --collapse-whitespace --remove-comments --minify-js true -o dist/popup/popup.html",
-    "min:js": "npx terser dist/js/content.min.js -c -m -o dist/js/content.min.js && npx terser dist/popup/popup.min.js -c -m -o dist/popup/popup.min.js",
+    "min:js": "npx terser dist/js/content.js -c -m -o dist/js/content.min.js && npx terser dist/popup/popup.js -c -m -o dist/popup/popup.min.js",
+    "min:js:clean": "rm dist/js/content.js & rm dist/popup/popup.js",
     "min:css": "npx cleancss -o dist/popup/popup.min.css src/popup/popup.css && npx cleancss -o dist/css/content.min.css src/css/content.css",
     "cp": "cp src/manifest.json dist/ && cp -r src/images dist/",
     "build": "npm run tsc && npm run min && npm run cp"

@@ -2,8 +2,8 @@ class Popup{
     private _doc;
     private browser;
     private localStorage;
-    private cssSelector: CssSelector;
-    private element: CustomElement;
+    private cssSelector: CssSelectorPopup;
+    private element: CustomElementPopup;
     private youtubeStoreKey = 'YOUTUBE_STORE_RAI_01182024';
     private youtubeLinks: YoutubeVideo[] = [];
 
@@ -19,7 +19,7 @@ class Popup{
         console.log('Popup object created!');     
     }
 
-    private getCssSelector(): CssSelector{
+    private getCssSelector(): CssSelectorPopup{
         return {
             youtubeLinksList: "#youtube-links-list",
             list: ".list",
@@ -28,7 +28,7 @@ class Popup{
         };
     }
 
-    private getElement(): CustomElement{   
+    private getElement(): CustomElementPopup{   
         return {
             youtubeLinksListEl: this._doc.querySelector(`${this.cssSelector.youtubeLinksList}`),
             listEl: this._doc.querySelector(`${this.cssSelector.youtubeLinksList} > ${this.cssSelector.list}`),
@@ -88,7 +88,7 @@ class Popup{
         this.element = this.getElement();
 
         this.element.aEl.forEach(a => {
-            this.deleteEventListener(a, 'click', this.sendNavigateRequest.bind(this, a));
+            this.deleteEventListener(a, 'click');
         });
 
         this.setEventListener(this.element.listEl, 'click', this.sendNavigateRequest.bind(this), true);
@@ -103,7 +103,7 @@ class Popup{
         this.browser.tabs.query(params, (tabs)=>{
             const currentTab = tabs[0].id;
             const url = anchorChild.getAttribute('href') || '';
-            const request = this.formatRequest(Action.NAVIGATE, url);
+            const request = this.formatRequest(ActionPopup.NAVIGATE, url);
 
             currentTab && this.browser.tabs.sendMessage(currentTab, request);
         });
@@ -116,7 +116,7 @@ class Popup{
         }
     }
 
-    private formatRequest(action: Action, request: object | string){
+    private formatRequest(action: ActionPopup, request: object | string){
         return{
             action,
             request
@@ -126,18 +126,18 @@ class Popup{
 
 const popup = new Popup();
 
-enum Action {
+enum ActionPopup {
     NAVIGATE = "NAVIGATE"
 }
 
-interface CssSelector{
+interface CssSelectorPopup{
     youtubeLinksList: string;
     list: string;
     link: string;
     a: string;
 }
 
-interface CustomElement{
+interface CustomElementPopup{
     youtubeLinksListEl: HTMLElement | null;
     listEl: HTMLInputElement | null;
     linkEl: NodeListOf<HTMLElement>;

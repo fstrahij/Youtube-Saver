@@ -1,4 +1,4 @@
-class Content {
+class Content{
     private _doc;
     private browser;
     private localStorage;
